@@ -1,0 +1,14 @@
+{
+    "name": "acme/totalcms-starter",
+    "description": "Starter template for Total CMS extensions",
+    "type": "totalcms-extension",
+    "license": "MIT",
+    "require": {
+        "php": ">=8.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Acme\\Starter\\": "src/"
+        }
+    }
+}

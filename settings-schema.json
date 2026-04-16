@@ -1,0 +1,21 @@
+{
+    "type": "object",
+    "properties": {
+        "greeting": {
+            "type": "string",
+            "title": "Greeting Message",
+            "description": "The greeting used by the extension",
+            "default": "Hello"
+        },
+        "enabled_features": {
+            "type": "array",
+            "title": "Enabled Features",
+            "description": "Which features of this extension are active",
+            "items": {
+                "type": "string",
+                "enum": ["greet", "widget", "events"]
+            },
+            "default": ["greet", "widget", "events"]
+        }
+    }
+}

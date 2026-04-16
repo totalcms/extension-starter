@@ -1,0 +1,23 @@
+{
+    "id": "starter-items",
+    "description": "Example schema provided by the starter extension",
+    "category": "starter",
+    "properties": {
+        "title": {
+            "type": "text",
+            "label": "Title",
+            "placeholder": "Enter a title"
+        },
+        "content": {
+            "type": "styledtext",
+            "label": "Content"
+        },
+        "priority": {
+            "type": "number",
+            "label": "Priority",
+            "default": 0
+        }
+    },
+    "required": ["id", "title"],
+    "index": ["id", "title", "priority"]
+}
