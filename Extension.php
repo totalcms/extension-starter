@@ -74,6 +74,10 @@ class Extension implements ExtensionInterface
 			error_log("[Starter] Object updated: {$payload['collection']}/{$payload['id']}");
 		});
 
+		// ── Custom Field Types ──────────────────────────────────────────
+		// Register a new field type usable in schemas (class must extend FormField)
+		// $context->addFieldType('colorpicker', \Acme\Starter\Fields\ColorPickerField::class);
+
 		// ── Routes ──────────────────────────────────────────────────────
 		// Register admin pages at /ext/acme/starter/...
 		$context->addRoutes(function (\Slim\Routing\RouteCollectorProxy $group): void {
@@ -91,5 +95,21 @@ class Extension implements ExtensionInterface
 
 		// Example: resolve a core service
 		// $config = $context->get(\TotalCMS\Support\Config::class);
+
+		// ── Installable Schemas ─────────────────────────────────────────
+		// Install a user-editable schema into tcms-data/.schemas/ (Pro+ only).
+		// Skips if the schema already exists. For read-only schemas managed
+		// by the extension, place them in the schemas/ directory instead.
+		//
+		// $context->installSchema([
+		//     'id' => 'starter-reviews',
+		//     'description' => 'Customer reviews',
+		//     'properties' => [
+		//         'rating' => ['type' => 'number', 'label' => 'Rating'],
+		//         'review' => ['type' => 'styledtext', 'label' => 'Review'],
+		//     ],
+		//     'required' => ['id', 'rating'],
+		//     'index' => ['id', 'rating'],
+		// ]);
 	}
 }
