@@ -61,7 +61,7 @@ class Extension implements ExtensionInterface
 			id: 'starter-widget',
 			label: 'Starter Widget',
 			template: '@acme-starter/widgets/starter.twig',
-			position: 'sidebar',
+			position: 'sidebar', // 'main' or 'sidebar'
 			priority: 50,
 		));
 
@@ -79,7 +79,7 @@ class Extension implements ExtensionInterface
 
 		// ── Custom Field Types ──────────────────────────────────────────
 		// Register a new field type usable in schemas (class must extend FormField)
-		// $context->addFieldType('colorpicker', \Acme\Starter\Fields\ColorPickerField::class);
+		$context->addFieldType('colorpicker', \Acme\Starter\Field\ColorPickerField::class);
 
 		// ── API Routes ──────────────────────────────────────────────────
 		// Protected API at /ext/acme/starter/... (requires session or API key)

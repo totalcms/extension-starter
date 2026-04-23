@@ -9,6 +9,12 @@
             "label": "Title",
             "placeholder": "Enter a title"
         },
+        "color": {
+            "type": "string",
+            "field": "colorpicker",
+            "label": "Accent Color",
+            "default": "#3B82F6"
+        },
         "content": {
             "type": "string",
             "field": "styledtext",
