@@ -4,16 +4,19 @@
     "category": "starter",
     "properties": {
         "title": {
-            "type": "text",
+            "type": "string",
+            "field": "text",
             "label": "Title",
             "placeholder": "Enter a title"
         },
         "content": {
-            "type": "styledtext",
+            "type": "string",
+            "field": "styledtext",
             "label": "Content"
         },
         "priority": {
             "type": "number",
+            "field": "number",
             "label": "Priority",
             "default": 0
         }

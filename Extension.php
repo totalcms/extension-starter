@@ -105,8 +105,8 @@ class Extension implements ExtensionInterface
 		//     'id' => 'starter-reviews',
 		//     'description' => 'Customer reviews',
 		//     'properties' => [
-		//         'rating' => ['type' => 'number', 'label' => 'Rating'],
-		//         'review' => ['type' => 'styledtext', 'label' => 'Review'],
+		//         'rating' => ['type' => 'number', 'field' => 'number', 'label' => 'Rating'],
+		//         'review' => ['type' => 'string', 'field' => 'styledtext', 'label' => 'Review'],
 		//     ],
 		//     'required' => ['id', 'rating'],
 		//     'index' => ['id', 'rating'],
