@@ -81,23 +81,27 @@ class Extension implements ExtensionInterface
 		// Register a new field type usable in schemas (class must extend FormField)
 		$context->addFieldType('colorpicker', \Acme\Starter\Field\ColorPickerField::class);
 
+		// ── Admin Assets ────────────────────────────────────────────────
+		// CSS and JS files from assets/ are served at /ext/acme/starter/assets/
+		$context->addAdminAsset('css', 'colorpicker.css');
+
 		// ── API Routes ──────────────────────────────────────────────────
 		// Protected API at /ext/acme/starter/... (requires session or API key)
-		$context->addRoutes(function (\Slim\Routing\RouteCollectorProxy $group): void {
+		$context->addRoutes(function ($group): void {
 			$group->get('/api/hello', Action\ApiHelloAction::class);
 		});
 
 		// ── Public Routes ───────────────────────────────────────────────
 		// Unauthenticated routes at /ext/acme/starter/... (no auth)
 		// Use for webhooks, embeds, and endpoints accessible without credentials.
-		$context->addPublicRoutes(function (\Slim\Routing\RouteCollectorProxy $group): void {
+		$context->addPublicRoutes(function ($group): void {
 			$group->get('/status', Action\PublicStatusAction::class);
 		});
 
 		// ── Admin Routes ────────────────────────────────────────────────
 		// Admin pages at /admin/ext/acme/starter/... (requires login)
 		// Templates can extend admin-dashboard.twig for the admin layout.
-		$context->addAdminRoutes(function (\Slim\Routing\RouteCollectorProxy $group): void {
+		$context->addAdminRoutes(function ($group): void {
 			$group->get('/dashboard', Action\DashboardAction::class);
 		});
 	}

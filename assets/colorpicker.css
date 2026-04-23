@@ -1,0 +1,27 @@
+/* Starter Extension: Color Picker Field Styles */
+
+.colorpicker-field input[type="color"] {
+	width: 3rem;
+	height: 3rem;
+	padding: 0.2rem;
+	border: 1px solid oklch(var(--totalform-border-color));
+	border-radius: var(--totalform-radius);
+	cursor: pointer;
+	background: none;
+}
+
+.colorpicker-field input[type="color"]::-webkit-color-swatch-wrapper {
+	padding: 0;
+}
+
+.colorpicker-field input[type="color"]::-webkit-color-swatch {
+	border: none;
+	border-radius: calc(var(--totalform-radius) - 2px);
+}
+
+.colorpicker-field .color-hex-value {
+	font-family: monospace;
+	font-size: 0.9rem;
+	color: oklch(var(--totalform-darkgray));
+	margin-left: 0.75rem;
+}

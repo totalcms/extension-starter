@@ -18,6 +18,7 @@ This starter demonstrates every extension point:
 | Dashboard widget | `templates/widgets/starter.twig` | Widget on admin home |
 | Event listener | `Extension.php` | Logs object create/update events |
 | Custom field type | `src/Field/ColorPickerField.php` | Native HTML color picker field |
+| Admin CSS asset | `assets/colorpicker.css` | Styles for the color picker field |
 | Read-only schema | `schemas/starter-items.json` | Example collection schema (Pro+) |
 | Installable schema | `Extension.php` | Example in boot() (commented out, Pro+) |
 | Settings | `settings-schema.json` | Configurable greeting message |

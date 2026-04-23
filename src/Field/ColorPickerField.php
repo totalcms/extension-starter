@@ -17,6 +17,7 @@ class ColorPickerField extends FormField
 {
 	protected string $defaultInputType = 'color';
 	protected string $defaultFieldType = 'colorpicker';
+	protected bool $icon = false;
 
 	public function buildFormField(): string
 	{
