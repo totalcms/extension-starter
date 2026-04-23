@@ -11,8 +11,10 @@ This starter demonstrates every extension point:
 | Twig function | `Extension.php` | `starter_greet()` function |
 | Twig filter | `Extension.php` | `reverse_words` filter |
 | CLI command | `src/Command/GreetCommand.php` | `tcms acme:greet` |
-| Admin page | `src/Action/DashboardAction.php` | Page at `/ext/acme/starter/dashboard` |
-| Admin nav | `Extension.php` | Sidebar link to the dashboard |
+| API route | `src/Action/ApiHelloAction.php` | Protected API at `/ext/acme/starter/api/hello` |
+| Public route | `src/Action/PublicStatusAction.php` | Unauthenticated at `/ext/acme/starter/status` |
+| Admin page | `src/Action/DashboardAction.php` | Admin page at `/admin/ext/acme/starter/dashboard` |
+| Admin nav | `Extension.php` | Sidebar link with custom SVG icon |
 | Dashboard widget | `templates/widgets/starter.twig` | Widget on admin home |
 | Event listener | `Extension.php` | Logs object create/update events |
 | Custom field type | `Extension.php` | Example registration (commented out) |
