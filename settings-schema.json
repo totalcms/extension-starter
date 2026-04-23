@@ -1,21 +1,16 @@
 {
-    "type": "object",
-    "properties": {
-        "greeting": {
-            "type": "string",
-            "title": "Greeting Message",
-            "description": "The greeting used by the extension",
-            "default": "Hello"
-        },
-        "enabled_features": {
-            "type": "array",
-            "title": "Enabled Features",
-            "description": "Which features of this extension are active",
-            "items": {
-                "type": "string",
-                "enum": ["greet", "widget", "events"]
-            },
-            "default": ["greet", "widget", "events"]
-        }
-    }
+	"$schema"     : "https://json-schema.org/draft/2020-12/schema",
+	"title"       : "Starter Extension Settings",
+	"description" : "Configuration for the starter extension",
+	"type"        : "object",
+	"properties"  : {
+		"greeting": {
+			"type"        : "string",
+			"field"       : "text",
+			"label"       : "Greeting Message",
+			"help"        : "The greeting used by the extension's Twig function and API endpoint",
+			"placeholder" : "Hello",
+			"default"     : "Hello"
+		}
+	}
 }

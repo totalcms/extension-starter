@@ -7,16 +7,6 @@
         "totalcms": ">=3.3.0",
         "php": ">=8.2"
     },
-    "permissions": [
-        "twig:functions",
-        "twig:filters",
-        "cli:commands",
-        "routes:admin",
-        "admin:nav",
-        "admin:widgets",
-        "events:listen",
-        "settings:read"
-    ],
     "min_edition": "lite",
     "entrypoint": "Extension.php",
     "settings_schema": "settings-schema.json",

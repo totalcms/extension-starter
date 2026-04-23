@@ -25,8 +25,10 @@ class Extension implements ExtensionInterface
 		// ── Twig Functions ──────────────────────────────────────────────
 		// Available in all templates: {{ starter_greet('World') }}
 		$context->addTwigFunction(
-			new TwigFunction('starter_greet', function (string $name): string {
-				return "Hello, {$name}!";
+			new TwigFunction('starter_greet', function (string $name) use ($context): string {
+				$greeting = $context->setting('greeting', 'Hello');
+
+				return "{$greeting}, {$name}!";
 			})
 		);
 
@@ -111,9 +113,6 @@ class Extension implements ExtensionInterface
 		// The boot phase runs after ALL extensions have registered.
 		// Use $context->get() to resolve services from the DI container.
 		//
-		// Example: read a setting configured by the admin
-		$greeting = $context->setting('greeting', 'Hello');
-
 		// Example: resolve a core service
 		// $config = $context->get(\TotalCMS\Support\Config::class);
 
