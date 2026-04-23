@@ -55,11 +55,12 @@ class Extension implements ExtensionInterface
 		));
 
 		// ── Dashboard Widget ────────────────────────────────────────────
-		// Adds a widget to the admin home screen
+		// Adds a widget to the admin home screen.
+		// Use @vendor-name/path.twig to reference templates in your templates/ dir.
 		$context->addDashboardWidget(new DashboardWidget(
 			id: 'starter-widget',
 			label: 'Starter Widget',
-			template: 'widgets/starter.twig',
+			template: '@acme-starter/widgets/starter.twig',
 			position: 'sidebar',
 			priority: 50,
 		));
