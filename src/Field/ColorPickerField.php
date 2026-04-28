@@ -17,10 +17,11 @@ class ColorPickerField extends FormField
 {
 	protected string $defaultInputType = 'color';
 	protected string $defaultFieldType = 'colorpicker';
-	protected bool $icon = false;
 
 	public function buildFormField(): string
 	{
+		$this->icon = false; // No icon for the color picker
+
 		$attributes = $this->formFieldAttributes();
 
 		// Ensure the value is a valid hex color, default to black
