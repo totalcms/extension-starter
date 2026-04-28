@@ -14,5 +14,9 @@
         "name": "Your Name",
         "url": "https://your-site.com"
     },
+    "links": [
+        {"label": "Documentation", "url": "https://docs.totalcms.co/extensions/"},
+        {"label": "Dashboard", "url": "/admin/ext/acme/starter/dashboard"}
+    ],
     "license": "MIT"
 }

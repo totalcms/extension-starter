@@ -22,6 +22,7 @@ This starter demonstrates every extension point:
 | Read-only schema | `schemas/starter-items.json` | Example collection schema (Pro+) |
 | Installable schema | `Extension.php` | Example in boot() (commented out, Pro+) |
 | Settings | `settings-schema.json` | Configurable greeting message |
+| Manifest links | `extension.json` | "Documentation" and "Dashboard" links on the admin card |
 
 ## Getting Started
 
@@ -82,6 +83,48 @@ your-extension/
     schemas/                # Read-only schemas (Pro+)
     templates/              # Twig templates
 ```
+
+## Manifest Links
+
+Add a `links` array to `extension.json` to surface buttons on the admin Extensions card:
+
+```json
+"links": [
+    {"label": "Documentation", "url": "https://docs.totalcms.co/extensions/"},
+    {"label": "Dashboard", "url": "/admin/ext/acme/starter/dashboard"}
+]
+```
+
+Each entry needs a `label` and a `url`.
+
+- URLs starting with `http://` or `https://` are treated as external and open in a new tab.
+- Relative URLs (admin pages your extension registers) only show when the extension is **enabled** — they wouldn't resolve otherwise. External links are always shown so users can read your docs before enabling.
+
+## Schemas
+
+Two ways to ship schemas with an extension. Both require the **Pro** edition.
+
+| Approach | Where it lives | Editable by user? | Use when |
+|---|---|---|---|
+| Read-only | `schemas/yourname.json` in the extension | No — owned by the extension | The schema is core to the extension's behavior and shouldn't be modified |
+| Installable | `$context->installSchema([...])` in `boot()` | Yes — copied once into `tcms-data/.schemas/` | The schema is a starting point the user is expected to customize |
+
+Read-only schemas are auto-discovered. They show up in the admin schemas view alongside built-in schemas, and can be referenced by collections. Disabling the extension's `Schemas` capability hides them.
+
+`installSchema()` is a one-shot copy: it skips silently if a schema with the same `id` already exists, so subsequent boots don't overwrite the user's edits.
+
+## Version Requirements
+
+The `requires` block in `extension.json` is enforced before the extension can be enabled:
+
+```json
+"requires": {
+    "totalcms": ">=3.3.0",
+    "php": ">=8.2"
+}
+```
+
+If the running Total CMS or PHP version doesn't satisfy these constraints, the extension is **still listed** on the Extensions admin page but the Enable button is disabled and a yellow warning panel explains why. This means users can see your extension exists and read its docs, but they can't enable it on an unsupported runtime.
 
 ## Documentation
 
