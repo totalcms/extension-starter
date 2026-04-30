@@ -22,6 +22,7 @@ This starter demonstrates every extension point:
 | Read-only schema | `schemas/starter-items.json` | Example collection schema (Pro+) |
 | Installable schema | `Extension.php` | Example in boot() (commented out, Pro+) |
 | Settings | `settings-schema.json` | Configurable greeting message |
+| Icon | `icon.svg` | Displayed on the extension card in the admin UI |
 | Manifest links | `extension.json` | "Documentation" and "Dashboard" links on the admin card |
 
 ## Getting Started
@@ -75,6 +76,7 @@ tcms extension:enable your-vendor/your-extension
 your-extension/
     extension.json          # Manifest (required)
     Extension.php           # Entry point (required)
+    icon.svg                # Extension icon (optional)
     composer.json           # Dependencies and autoloading
     settings-schema.json    # Settings form definition
     src/

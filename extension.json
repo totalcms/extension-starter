@@ -3,6 +3,7 @@
     "name": "Starter Extension",
     "description": "A starter template for building Total CMS extensions",
     "version": "1.0.0",
+    "icon": "icon.png",
     "requires": {
         "totalcms": ">=3.3.0",
         "php": ">=8.2"
