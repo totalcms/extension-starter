@@ -68,15 +68,26 @@ class Extension implements ExtensionInterface
 		));
 
 		// ── Event Listeners ─────────────────────────────────────────────
-		// React to content changes
-		$context->addEventListener('object.created', function (array $payload): void {
-			// Called after any object is created in any collection
+		// React to content changes. Use $context->logger() to write to the
+		// shared extensions.log file (tcms-data/logs/extensions.log) on the
+		// 'extensions' channel. Prefix messages with your extension id so
+		// multi-extension logs stay readable.
+		$logger = $context->logger();
+
+		$context->addEventListener('object.created', function (array $payload) use ($logger): void {
+			// Called after any object is created in any collection.
 			// $payload contains: 'collection' and 'id'
-			error_log("[Starter] Object created: {$payload['collection']}/{$payload['id']}");
+			$logger->info('[acme/starter] object.created', $payload);
 		});
 
-		$context->addEventListener('object.updated', function (array $payload): void {
-			error_log("[Starter] Object updated: {$payload['collection']}/{$payload['id']}");
+		$context->addEventListener('object.updated', function (array $payload) use ($logger): void {
+			$logger->info('[acme/starter] object.updated', $payload);
+		});
+
+		$context->addEventListener('object.deleted', function (array $payload) use ($logger): void {
+			// PSR-3 levels: debug, info, notice, warning, error, critical, alert, emergency.
+			// Pass a context array as the second argument for structured fields.
+			$logger->warning('[acme/starter] object.deleted', $payload);
 		});
 
 		// ── Custom Field Types ──────────────────────────────────────────
