@@ -102,10 +102,31 @@ class Extension implements ExtensionInterface
 		// Register a new field type usable in schemas (class must extend FormField)
 		$context->addFieldType('colorpicker', \Acme\Starter\Field\ColorPickerField::class);
 
-		// ── Admin Assets ────────────────────────────────────────────────
+		// ── Assets (CSS / JS) ───────────────────────────────────────────
 		// CSS and JS files from assets/ are served at /ext/acme/starter/assets/
+		// with mtime-based cache busting. Admin assets render via
+		// {{ cms.adminAssetsHead/Body() }} (already wired in core admin
+		// templates); frontend assets render via {{ cms.assetsHead/Body() }}
+		// in your public theme template.
 		$context->addAdminAsset('css', 'colorpicker.css');
 		// $context->addAdminAsset('js', 'admin.js');
+
+		// $context->addFrontendAsset('css', 'widget.css');
+		// $context->addFrontendAsset('js', 'widget.js');
+
+		// Both methods accept the same optional arguments:
+		//   position: 'head' | 'body' | null   (null = CSS→head, JS→body)
+		//   module:   bool                      (JS only — <script type="module">, default true)
+		//   preload:  bool                      (emit a preload/modulepreload hint in head)
+		//   version:  ?string                   (override mtime cache-bust query string)
+		//
+		// $context->addFrontendAsset(
+		//     type: 'js',
+		//     path: 'widget.js',
+		//     position: 'body',
+		//     module: true,
+		//     preload: true,
+		// );
 
 		// ── API Routes ──────────────────────────────────────────────────
 		// Protected API at /ext/acme/starter/... (requires session or API key)

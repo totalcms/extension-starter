@@ -21,6 +21,7 @@ This starter demonstrates every extension point:
 | Custom field type | `src/Field/ColorPickerField.php` | Native HTML color picker field |
 | Admin CSS asset | `assets/colorpicker.css` | Styles for the color picker field |
 | Admin JS asset | `Extension.php` | Example in register() (commented out) |
+| Frontend CSS/JS assets | `Extension.php` | Examples in register() (commented out) |
 | Container definition | `Extension.php` | Example in register() (commented out) |
 | Page middleware | `Extension.php` | Example in register() (commented out) |
 | Read-only schema | `schemas/starter-items.json` | Example collection schema (Pro+) |
