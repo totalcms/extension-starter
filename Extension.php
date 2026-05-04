@@ -40,6 +40,14 @@ class Extension implements ExtensionInterface
 			})
 		);
 
+		// ── Twig Globals ────────────────────────────────────────────────
+		// Expose a value (object, array, or scalar) as a global variable in
+		// every template. Usage in templates: {{ starter.version }}
+		//
+		// $context->addTwigGlobal('starter', [
+		//     'version' => '1.0.0',
+		// ]);
+
 		// ── CLI Commands ────────────────────────────────────────────────
 		// Run with: tcms acme:greet --name=World
 		$context->addCommand(new GreetCommand());
@@ -97,6 +105,7 @@ class Extension implements ExtensionInterface
 		// ── Admin Assets ────────────────────────────────────────────────
 		// CSS and JS files from assets/ are served at /ext/acme/starter/assets/
 		$context->addAdminAsset('css', 'colorpicker.css');
+		// $context->addAdminAsset('js', 'admin.js');
 
 		// ── API Routes ──────────────────────────────────────────────────
 		// Protected API at /ext/acme/starter/... (requires session or API key)
@@ -117,6 +126,35 @@ class Extension implements ExtensionInterface
 		$context->addAdminRoutes(function ($group): void {
 			$group->get('/dashboard', Action\DashboardAction::class);
 		});
+
+		// ── Container Definitions ───────────────────────────────────────
+		// Register a service in the DI container so other code can pull it
+		// via constructor injection or $context->get() during boot.
+		// The factory receives the Psr\Container\ContainerInterface.
+		//
+		// $context->addContainerDefinition(
+		//     \Acme\Starter\Service\GeoIPService::class,
+		//     fn () => new \Acme\Starter\Service\GeoIPService(),
+		// );
+
+		// ── Page Middleware ─────────────────────────────────────────────
+		// Register a middleware that builder pages can opt into via their
+		// `middleware` field — useful for auth gates, rate limits, geo
+		// redirects, A/B splits. The class must implement
+		// PageMiddlewareInterface (handle() returns ?ResponseInterface —
+		// null to continue, a Response to short-circuit) and be resolvable
+		// from the container — pair with addContainerDefinition().
+		//
+		// Names are stable contract: kebab-case, never rename once shipped
+		// or sites with the name in their page records will break.
+		//
+		// $context->addContainerDefinition(
+		//     \Acme\Starter\Middleware\GeoRedirect::class,
+		//     fn ($c) => new \Acme\Starter\Middleware\GeoRedirect(
+		//         $c->get(\Acme\Starter\Service\GeoIPService::class),
+		//     ),
+		// );
+		// $context->addPageMiddleware('geo-redirect', \Acme\Starter\Middleware\GeoRedirect::class);
 	}
 
 	public function boot(ExtensionContext $context): void

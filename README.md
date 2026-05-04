@@ -10,6 +10,7 @@ This starter demonstrates every extension point:
 |---|---|---|
 | Twig function | `Extension.php` | `starter_greet()` function |
 | Twig filter | `Extension.php` | `reverse_words` filter |
+| Twig global | `Extension.php` | Example in register() (commented out) |
 | CLI command | `src/Command/GreetCommand.php` | `tcms acme:greet` |
 | API route | `src/Action/ApiHelloAction.php` | Protected API at `/ext/acme/starter/api/hello` |
 | Public route | `src/Action/PublicStatusAction.php` | Unauthenticated at `/ext/acme/starter/status` |
@@ -19,6 +20,9 @@ This starter demonstrates every extension point:
 | Event listener | `Extension.php` | Logs object create/update events |
 | Custom field type | `src/Field/ColorPickerField.php` | Native HTML color picker field |
 | Admin CSS asset | `assets/colorpicker.css` | Styles for the color picker field |
+| Admin JS asset | `Extension.php` | Example in register() (commented out) |
+| Container definition | `Extension.php` | Example in register() (commented out) |
+| Page middleware | `Extension.php` | Example in register() (commented out) |
 | Read-only schema | `schemas/starter-items.json` | Example collection schema (Pro+) |
 | Installable schema | `Extension.php` | Example in boot() (commented out, Pro+) |
 | Settings | `settings-schema.json` | Configurable greeting message |

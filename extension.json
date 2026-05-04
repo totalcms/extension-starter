@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "icon": "icon.png",
     "requires": {
-        "totalcms": ">=3.3.0",
+        "totalcms": ">=3.3.0-beta",
         "php": ">=8.2"
     },
     "min_edition": "lite",
