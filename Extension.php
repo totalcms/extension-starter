@@ -148,6 +148,135 @@ class Extension implements ExtensionInterface
 			$group->get('/dashboard', Action\DashboardAction::class);
 		});
 
+		// ── MCP Tools ───────────────────────────────────────────────────
+		// Register PHP-backed tools the MCP server exposes to AI agents.
+		// Tool names are global across core + all extensions + all
+		// schema-defined tools — vendor-prefix to avoid collisions.
+		// Handlers run inside the MCP request lifecycle: return MCP
+		// tool envelopes ({ content: [...] } or { isError: true, ... })
+		// and never throw past the SDK transport.
+		//
+		// See docs: extensions/mcp-extensions and mcp/extensions.
+		$context->registerMcpTool(
+			name: 'acme_search_inventory',
+			description: 'Search the acme inventory by SKU or product name.',
+			access: 'public', // 'public' | 'admin' | 'authenticated' (Phase 4)
+			handler: function (string $query, int $limit = 10): array {
+				// Params map by NAME to the inputSchema below — the SDK
+				// uses reflection on this closure's parameters. Declare
+				// typed args, not a single `array $args`.
+				$items = [
+					['sku' => 'WIDGET-1', 'name' => 'Demo Widget', 'price' => 19.99],
+				];
+
+				return [
+					'content' => [[
+						'type' => 'text',
+						'text' => json_encode($items, JSON_PRETTY_PRINT),
+					]],
+				];
+			},
+			inputSchema: [
+				'type'     => 'object',
+				'required' => ['query'],
+				'properties' => [
+					'query' => ['type' => 'string', 'description' => 'SKU or product name (case-insensitive).'],
+					'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 50, 'default' => 10],
+				],
+			],
+		);
+
+		// ── MCP Tool With Progress Notifications ────────────────────────
+		// Long-running tools can emit notifications/progress events that
+		// stream to the client mid-call. Declare ?\Mcp\Server\RequestContext
+		// $ctx = null on your handler; the SDK auto-injects it via
+		// reflection. Then call $ctx?->getClientGateway()->progress(...) at
+		// meaningful checkpoints. The SDK auto-switches the HTTP response
+		// to text/event-stream — no extra wiring needed. If the client
+		// didn't send _meta.progressToken in the tools/call request, the
+		// progress() calls silently no-op.
+		//
+		// $context->registerMcpTool(
+		//     name: 'acme_bulk_reindex',
+		//     description: 'Reindex many inventory records.',
+		//     access: 'admin',
+		//     handler: function (array $ids, ?\Mcp\Server\RequestContext $ctx = null): array {
+		//         $total = count($ids);
+		//         foreach ($ids as $i => $id) {
+		//             // ... reindex $id ...
+		//             if (($i + 1) % 10 === 0) {
+		//                 $ctx?->getClientGateway()->progress(
+		//                     progress: (float) ($i + 1),
+		//                     total:    (float) $total,
+		//                     message:  sprintf('reindexed %d of %d', $i + 1, $total),
+		//                 );
+		//             }
+		//         }
+		//
+		//         return ['content' => [['type' => 'text', 'text' => "Reindexed {$total} records."]]];
+		//     },
+		//     inputSchema: [
+		//         'type'     => 'object',
+		//         'required' => ['ids'],
+		//         'properties' => [
+		//             'ids' => [
+		//                 'type'        => 'array',
+		//                 'items'       => ['type' => 'string'],
+		//                 'description' => 'Inventory SKUs to reindex.',
+		//             ],
+		//         ],
+		//     ],
+		// );
+
+		// ── MCP Resources ───────────────────────────────────────────────
+		// Resources are addressable content the MCP server exposes via
+		// resources/read (and the get_resource tool). Use a vendor-prefixed
+		// URI scheme (acme://). The tcms:// scheme is reserved for core
+		// collection resources; never register URIs under it from an
+		// extension.
+		//
+		// A concrete resource — one fixed URI. NOTE: the `name` parameter
+		// must match [A-Za-z0-9_-]+ (slug form) per MCP SDK validation —
+		// no spaces. Despite the docblock describing it as "human-readable",
+		// the SDK enforces a strict character set.
+		$context->registerMcpResource(
+			uri:         'acme://message/of-the-day',
+			name:        'message-of-the-day',
+			description: "Today's inspirational message — refreshed every 24 hours.",
+			handler:     fn (): array => [
+				'contents' => [[
+					'uri'      => 'acme://message/of-the-day',
+					'mimeType' => 'text/plain',
+					'text'     => 'Be kind to your future self.',
+				]],
+			],
+		);
+
+		// ── MCP Resource Templates ──────────────────────────────────────
+		// Templates declare URI patterns with {placeholders}. The handler
+		// receives substituted segment values as named arguments matching
+		// the template's variables — the SDK does the parsing. Use
+		// templates for unbounded resource sets (one resource per
+		// inventory item, one per invoice, etc.) where enumerating every
+		// concrete URI in resources/list would be impractical.
+		//
+		// $context->registerMcpResourceTemplate(
+		//     uriTemplate: 'acme://inventory/{sku}',
+		//     name:        'inventory-item',
+		//     description: 'Acme inventory item by SKU.',
+		//     handler:     function (string $sku): array {
+		//         $item = ['sku' => $sku, 'name' => 'Sample item', 'price' => 19.99];
+		//
+		//         return [
+		//             'contents' => [[
+		//                 'uri'      => "acme://inventory/{$sku}",
+		//                 'mimeType' => 'application/json',
+		//                 'text'     => json_encode($item, JSON_PRETTY_PRINT),
+		//             ]],
+		//         ];
+		//     },
+		// );
+
 		// ── Container Definitions ───────────────────────────────────────
 		// Register a service in the DI container so other code can pull it
 		// via constructor injection or $context->get() during boot.

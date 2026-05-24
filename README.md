@@ -19,6 +19,10 @@ This starter demonstrates every extension point:
 | Dashboard widget | `templates/widgets/starter.twig` | Widget on admin home |
 | Event listener | `Extension.php` | Logs object create/update events |
 | Custom field type | `src/Field/ColorPickerField.php` | Native HTML color picker field |
+| MCP tool | `Extension.php` | `acme_search_inventory` — query the inventory from an AI agent |
+| MCP tool with progress | `Extension.php` | Bulk-reindex example with SSE progress notifications (commented) |
+| MCP resource | `Extension.php` | `acme://message/of-the-day` — addressable content for AI agents |
+| MCP resource template | `Extension.php` | URI template `acme://inventory/{sku}` for unbounded resource sets (commented) |
 | Admin CSS asset | `assets/colorpicker.css` | Styles for the color picker field |
 | Admin JS asset | `Extension.php` | Example in register() (commented out) |
 | Frontend CSS/JS assets | `Extension.php` | Examples in register() (commented out) |
