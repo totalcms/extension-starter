@@ -287,6 +287,37 @@ class Extension implements ExtensionInterface
 		//     },
 		// );
 
+		// ── MCP Prompts ─────────────────────────────────────────────────
+		// Register prompts the MCP server exposes to AI agents. Prompts
+		// appear in prompts/list and are callable via prompts/get.
+		// If the name collides with a collection-stored prompt, the
+		// collection version wins and this one is skipped.
+		//
+		// $context->registerMcpPrompt(
+		//     new \Mcp\Schema\Prompt(
+		//         name: 'acme_audit_links',
+		//         description: 'Audit broken links on any page.',
+		//         arguments: [
+		//             new \Mcp\Schema\PromptArgument('url', 'The URL to audit', required: true),
+		//         ],
+		//     ),
+		//     handler: fn (array $arguments = []) => new \Mcp\Schema\Result\GetPromptResult(
+		//         messages: [new \Mcp\Schema\Content\PromptMessage(
+		//             \Mcp\Schema\Enum\Role::User,
+		//             new \Mcp\Schema\Content\TextContent('Check all links on: ' . ($arguments['url'] ?? '')),
+		//         )],
+		//     ),
+		// );
+
+		// ── Search Providers ────────────────────────────────────────────
+		// Register a custom search provider that replaces or supplements
+		// T3's built-in text search. The provider handles indexing (on
+		// object CRUD events) and querying (from MCP search tools, future
+		// REST, site-wide search). Must implement SearchProvider interface.
+		// See totalcms/algolia-search for a full working example.
+		//
+		// $context->registerSearchProvider(new \Acme\Starter\Search\MySearchProvider());
+
 		// ── Container Definitions ───────────────────────────────────────
 		// Register a service in the DI container so other code can pull it
 		// via constructor injection or $context->get() during boot.

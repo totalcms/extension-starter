@@ -1,23 +1,30 @@
 {
-    "id": "acme/starter",
-    "name": "Starter Extension",
-    "description": "A starter template for building Total CMS extensions",
-    "version": "1.0.0",
-    "icon": "icon.png",
-    "requires": {
-        "totalcms": ">=3.5.0-beta",
-        "php": ">=8.2"
+    "id"          : "acme/starter",
+    "name"        : "Starter Extension",
+    "description" : "A starter template for building Total CMS extensions",
+    "version"     : "1.0.0",
+    "icon"        : "icon.png",
+    "hidden"      : false,
+    "requires"    : {
+        "totalcms" : ">=3.5.0-beta",
+        "php"      : ">=8.2"
     },
-    "min_edition": "lite",
-    "entrypoint": "Extension.php",
-    "settings_schema": "settings-schema.json",
-    "author": {
-        "name": "Your Name",
-        "url": "https://your-site.com"
+    "min_edition"     : "lite",
+    "entrypoint"      : "Extension.php",
+    "settings_schema" : "settings-schema.json",
+    "author"          : {
+        "name" : "Your Name",
+        "url"  : "https://your-site.com"
     },
     "links": [
-        {"label": "Documentation", "url": "https://docs.totalcms.co/extensions/"},
-        {"label": "Dashboard", "url": "/admin/ext/acme/starter/dashboard"}
+        {
+			"label" : "Documentation",
+			"url"   : "https://docs.totalcms.co/extensions/"
+		},
+        {
+			"label" : "Dashboard",
+			"url"   : "/admin/ext/acme/starter/dashboard"
+		}
     ],
     "license": "MIT"
 }
