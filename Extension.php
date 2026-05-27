@@ -130,6 +130,16 @@ class Extension implements ExtensionInterface
 
 		// ── API Routes ──────────────────────────────────────────────────
 		// Protected API at /ext/acme/starter/... (requires session or API key)
+		//
+		// Form Actions are registered alongside API routes — the form
+		// processor dispatches to your route automatically. Requires Pro.
+		// See totalcms/pushover for a full working example.
+		//
+		// $context->addFormAction('acme-notify', new \TotalCMS\Domain\Extension\Data\FormAction(
+		//     name: 'acme-notify',
+		//     route: '/ext/acme/starter/notify',
+		//     label: 'Acme Notification',
+		// ));
 		$context->addRoutes(function ($group): void {
 			$group->get('/api/hello', Action\ApiHelloAction::class);
 		});
