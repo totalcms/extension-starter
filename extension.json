@@ -2,6 +2,7 @@
     "id"          : "acme/starter",
     "name"        : "Starter Extension",
     "description" : "A starter template for building Total CMS extensions",
+    "reviewNote"  : "The Starter Extension demonstrates every Total CMS extension point. It exposes a public, unauthenticated status endpoint for health checks, listens for content changes to power its dashboard widget, and registers tools and resources for AI agents through MCP — all using official, documented Total CMS APIs.",
     "version"     : "1.0.0",
     "icon"        : "icon.png",
     "hidden"      : false,

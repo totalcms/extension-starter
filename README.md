@@ -33,6 +33,7 @@ This starter demonstrates every extension point:
 | Settings | `settings-schema.json` | Configurable greeting message |
 | Icon | `icon.svg` | Displayed on the extension card in the admin UI |
 | Manifest links | `extension.json` | "Documentation" and "Dashboard" links on the admin card |
+| Review note | `extension.json` | Plain-language note shown on the pre-enable review screen |
 
 ## Getting Started
 
@@ -110,6 +111,30 @@ Each entry needs a `label` and a `url`.
 
 - URLs starting with `http://` or `https://` are treated as external and open in a new tab.
 - Relative URLs (admin pages your extension registers) only show when the extension is **enabled** — they wouldn't resolve otherwise. External links are always shown so users can read your docs before enabling.
+
+## Review Note
+
+When a user enables an extension that touches sensitive capabilities — public (unauthenticated) routes, listening to all content changes, registering services, or exposing tools/resources to AI agents over MCP — Total CMS shows a short **pre-enable review screen** before the extension turns on. (Extensions that use none of those just enable in one click.) The screen also lists any high-risk patterns a static source scan finds in your code (`shell_exec`, raw network calls, etc.).
+
+The `reviewNote` field in `extension.json` is **your message at the top of that screen** — your chance to explain, in plain language, what your extension does and why it needs the access it asks for:
+
+```json
+"reviewNote": "Receives Stripe webhooks at a public endpoint to confirm payments, and watches new orders to send notifications. No data leaves your site except the Stripe calls you configure."
+```
+
+Guidelines:
+
+- **Write for the site owner, not a developer.** Say what the extension *does* and *why* it needs each sensitive capability.
+- **Be specific about public endpoints and data access** — those are what users worry about.
+- **Keep it short** — a sentence or two. It's a reassurance, not a manual.
+- You'll see this exact screen when you enable your own extension during testing, so you can preview how it reads.
+
+Two behaviors worth knowing as you build:
+
+- **Capabilities you add in a later version default to *off*** for users who already had your extension enabled. Total CMS surfaces the new capability in the extension's settings as a toggle, so the user opts in deliberately — adding a capability in an update won't silently start using it.
+- **An update that introduces high-risk code patterns** (caught by the source scan) **disables the extension** until the user reviews and re-enables it. Clean updates install without interruption. So keep risky calls intentional and explainable.
+
+`reviewNote` is optional — but on an extension that uses any sensitive capability, a good note is the difference between a confident "Enable" and a nervous one.
 
 ## Schemas
 
