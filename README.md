@@ -18,6 +18,7 @@ This starter demonstrates every extension point:
 | Admin nav | `Extension.php` | Sidebar link with custom SVG icon |
 | Dashboard widget | `templates/widgets/starter.twig` | Widget on admin home |
 | Event listener | `Extension.php` | Logs object create/update events |
+| Automation | `Extension.php` | `prune-drafts` scheduled job (+ commented event-driven example) |
 | Custom field type | `src/Field/ColorPickerField.php` | Native HTML color picker field |
 | MCP tool | `Extension.php` | `acme_search_inventory` — query the inventory from an AI agent |
 | MCP tool with progress | `Extension.php` | Bulk-reindex example with SSE progress notifications (commented) |

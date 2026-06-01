@@ -98,6 +98,64 @@ class Extension implements ExtensionInterface
 			$logger->warning('[acme/starter] object.deleted', $payload);
 		});
 
+		// ── Automations ─────────────────────────────────────────────────
+		// Ship a server-side automation as part of your extension. Like the
+		// user-authored automations in the admin, an extension automation runs
+		// on a schedule, a webhook, or a content event — but its handler is the
+		// closure you register here (held in memory, never written to disk).
+		//
+		// They appear in the automations admin READ-ONLY (operators can run or
+		// toggle them via the 'automations' capability, but can't edit the
+		// closure — it lives in your code). Schedule + event triggers dispatch
+		// automatically; for HTTP use a public route (see below) instead of a
+		// webhook trigger, since an extension automation's id isn't a URL path.
+		//
+		// The handler receives an AutomationContext ($ctx) — the ONLY API it
+		// gets. Pre-injected services + the trigger payload:
+		//   $ctx->objectFetcher / objectSaver / objectUpdater / objectRemover
+		//   $ctx->indexReader   — read a collection index
+		//   $ctx->mailer        — EmailService::sendEmail('mailer-id', [...])
+		//   $ctx->config        — core Config
+		//   $ctx->logger        — PSR-3 logger (automations.log channel)
+		//   $ctx->trigger       — the trigger row that fired this run
+		//   $ctx->args          — webhook query+body / manual run args
+		//   $ctx->event         — event payload ['collection','id'] (event runs)
+		//
+		// Schedule cron is evaluated in the site timezone. Return value (if any)
+		// is recorded on the run record; throwing marks the run failed.
+		$context->addAutomation(
+			id: 'prune-drafts',
+			label: 'Prune stale drafts',
+			triggers: [
+				['type' => 'schedule', 'cron' => '0 3 * * *'], // daily at 03:00
+			],
+			handler: function (\TotalCMS\Domain\Automation\Data\AutomationContext $ctx): array {
+				$ctx->logger->info('[acme/starter] prune-drafts tick');
+
+				// ... do work via $ctx->objectFetcher / $ctx->objectRemover ...
+
+				return ['pruned' => 0];
+			},
+		);
+
+		// ── Automation: react to a content event ────────────────────────
+		// Fires after the matching core event. Add a 'collection' key to scope
+		// the trigger to one collection; omit it to match every collection.
+		//
+		// $context->addAutomation(
+		//     id: 'welcome-new-member',
+		//     label: 'Welcome new members',
+		//     triggers: [
+		//         ['type' => 'event', 'event' => 'object.created', 'collection' => 'members'],
+		//     ],
+		//     handler: function (\TotalCMS\Domain\Automation\Data\AutomationContext $ctx): void {
+		//         $collection = (string) ($ctx->event['collection'] ?? '');
+		//         $id         = (string) ($ctx->event['id'] ?? '');
+		//         $member     = $ctx->objectFetcher->fetchObject($collection, $id);
+		//         $ctx->mailer->sendEmail('welcome', ['member' => $member->toArray()]);
+		//     },
+		// );
+
 		// ── Custom Field Types ──────────────────────────────────────────
 		// Register a new field type usable in schemas (class must extend FormField)
 		$context->addFieldType('colorpicker', \Acme\Starter\Field\ColorPickerField::class);
