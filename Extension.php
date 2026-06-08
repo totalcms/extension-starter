@@ -24,6 +24,10 @@ class Extension implements ExtensionInterface
 	{
 		// ── Twig Functions ──────────────────────────────────────────────
 		// Available in all templates: {{ starter_greet('World') }}
+		//
+		// Functions and filters must RETURN their output — never echo, print,
+		// or ob_start(). Total CMS renders in streaming (yield) mode, so any
+		// output written directly bypasses the template stream and is lost.
 		$context->addTwigFunction(
 			new TwigFunction('starter_greet', function (string $name) use ($context): string {
 				$greeting = $context->setting('greeting', 'Hello');
