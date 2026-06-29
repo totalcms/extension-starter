@@ -60,11 +60,17 @@ class Extension implements ExtensionInterface
 		// Adds a link to the admin sidebar. Pass raw SVG — it's URL-encoded
 		// automatically by the template. Leave icon empty for the default
 		// puzzle piece icon.
+		//
+		// permission: 'admin' = super admins only; 'any' = also visible to
+		// non-admin users whose access group has been granted this extension.
+		// IMPORTANT: this only controls whether the LINK shows. It must match
+		// the permission on the admin route below (see "Admin Routes"), or the
+		// link will appear but open to an access-denied page.
 		$context->addAdminNavItem(new AdminNavItem(
 			label: 'Starter',
 			icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><g fill="black" stroke-linecap="round" stroke-linejoin="round"><path d="M16 26L17.83 24.17C17.89 24.11 17.85 24 17.76 24H14.24C14.15 24 14.11 24.11 14.17 24.17L16 26Z" stroke="black" stroke-width="2" fill="none"/><path d="M16 26V30.5" stroke="black" stroke-width="2" fill="none"/><path d="M10.67 8L4 2.67V12.67L2 16L4.67 17.33L4 20.67L6.67 21.33L10.9 27.91C12 29.63 13.9 30.67 15.94 30.67H16.06C18.1 30.67 20 29.63 21.1 27.91L25.33 21.33L28 20.67L27.33 17.33L30 16L28 12.67V2.67L21.33 8C21.33 8 18.92 6.67 16 6.67C13.08 6.67 10.67 8 10.67 8Z" stroke="black" stroke-width="2" fill="none"/><circle cx="12" cy="17.5" r="2" fill="black"/><circle cx="20" cy="17.5" r="2" fill="black"/></g></svg>',
 			url: '/admin/ext/acme/starter/dashboard',
-			permission: 'admin',
+			permission: 'any',
 			priority: 80,
 		));
 
@@ -216,8 +222,14 @@ class Extension implements ExtensionInterface
 		// ── Admin Routes ────────────────────────────────────────────────
 		// Admin pages at /admin/ext/acme/starter/... (requires login)
 		// Templates can extend admin-dashboard.twig for the admin layout.
+		//
+		// The third argument is the route permission. It defaults to 'admin'
+		// (super admins only) when omitted — pass 'any' to also allow non-admin
+		// users whose access group has been granted this extension. This must
+		// match the nav item's permission above; the nav permission only hides
+		// the link, while THIS one actually gates the page.
 		$context->addAdminRoutes(function ($group): void {
-			$group->get('/dashboard', Action\DashboardAction::class);
+			$group->get('/dashboard', Action\DashboardAction::class, 'any');
 		});
 
 		// ── MCP Tools ───────────────────────────────────────────────────
