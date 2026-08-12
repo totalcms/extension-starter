@@ -323,17 +323,17 @@ class Extension implements ExtensionInterface
 		// must match [A-Za-z0-9_-]+ (slug form) per MCP SDK validation —
 		// no spaces. Despite the docblock describing it as "human-readable",
 		// the SDK enforces a strict character set.
+		// Return shapes (SDK ResourceResultFormatter): a plain string or
+		// ['text' => ..., 'mimeType' => ...] becomes text content; a data
+		// array is JSON-encoded (pair with 'application/json'). Never wrap
+		// in a ['contents' => [...]] envelope — the formatter would
+		// JSON-encode the envelope itself, double-wrapping your payload.
 		$context->registerMcpResource(
 			uri:         'acme://message/of-the-day',
 			name:        'message-of-the-day',
 			description: "Today's inspirational message — refreshed every 24 hours.",
-			handler:     fn (): array => [
-				'contents' => [[
-					'uri'      => 'acme://message/of-the-day',
-					'mimeType' => 'text/plain',
-					'text'     => 'Be kind to your future self.',
-				]],
-			],
+			mimeType:    'text/plain',
+			handler:     fn (): string => 'Be kind to your future self.',
 		);
 
 		// ── MCP Resource Templates ──────────────────────────────────────
@@ -344,21 +344,17 @@ class Extension implements ExtensionInterface
 		// inventory item, one per invoice, etc.) where enumerating every
 		// concrete URI in resources/list would be impractical.
 		//
+		// Each {placeholder} matches a single path segment ([^/]+) — a value
+		// containing '/' needs one placeholder per segment. JSON resources
+		// return the data array directly (the SDK JSON-encodes it under the
+		// default 'application/json' mimeType).
+		//
 		// $context->registerMcpResourceTemplate(
 		//     uriTemplate: 'acme://inventory/{sku}',
 		//     name:        'inventory-item',
 		//     description: 'Acme inventory item by SKU.',
-		//     handler:     function (string $sku): array {
-		//         $item = ['sku' => $sku, 'name' => 'Sample item', 'price' => 19.99];
-		//
-		//         return [
-		//             'contents' => [[
-		//                 'uri'      => "acme://inventory/{$sku}",
-		//                 'mimeType' => 'application/json',
-		//                 'text'     => json_encode($item, JSON_PRETTY_PRINT),
-		//             ]],
-		//         ];
-		//     },
+		//     handler:     fn (string $sku): array =>
+		//         ['sku' => $sku, 'name' => 'Sample item', 'price' => 19.99],
 		// );
 
 		// ── MCP Prompts ─────────────────────────────────────────────────
