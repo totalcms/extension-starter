@@ -9,6 +9,7 @@ use TotalCMS\Domain\Extension\Data\AdminNavItem;
 use TotalCMS\Domain\Extension\Data\DashboardWidget;
 use TotalCMS\Domain\Extension\ExtensionContext;
 use TotalCMS\Domain\Extension\ExtensionInterface;
+use TotalCMS\Domain\Extension\Service\RouteCollector;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
@@ -199,6 +200,13 @@ class Extension implements ExtensionInterface
 		// ── API Routes ──────────────────────────────────────────────────
 		// Protected API at /ext/acme/starter/... (requires session or API key)
 		//
+		// Your callback receives a TotalCMS RouteCollector — NOT a Slim
+		// RouteCollectorProxy. Extension routes are captured into a lookup
+		// table and dispatched by core at request time, so they never reach
+		// Slim directly. Type-hinting the Slim class throws a TypeError the
+		// moment the extension is enabled. Methods: get/post/put/patch/
+		// delete/any, each (string $path, mixed $handler, ?string $permission).
+		//
 		// Form Actions are registered alongside API routes — the form
 		// processor dispatches to your route automatically. Requires Pro.
 		// See totalcms/pushover for a full working example.
@@ -208,14 +216,14 @@ class Extension implements ExtensionInterface
 		//     route: '/ext/acme/starter/notify',
 		//     label: 'Acme Notification',
 		// ));
-		$context->addRoutes(function ($group): void {
+		$context->addRoutes(function (RouteCollector $group): void {
 			$group->get('/api/hello', Action\ApiHelloAction::class);
 		});
 
 		// ── Public Routes ───────────────────────────────────────────────
 		// Unauthenticated routes at /ext/acme/starter/... (no auth)
 		// Use for webhooks, embeds, and endpoints accessible without credentials.
-		$context->addPublicRoutes(function ($group): void {
+		$context->addPublicRoutes(function (RouteCollector $group): void {
 			$group->get('/status', Action\PublicStatusAction::class);
 		});
 
@@ -228,7 +236,7 @@ class Extension implements ExtensionInterface
 		// users whose access group has been granted this extension. This must
 		// match the nav item's permission above; the nav permission only hides
 		// the link, while THIS one actually gates the page.
-		$context->addAdminRoutes(function ($group): void {
+		$context->addAdminRoutes(function (RouteCollector $group): void {
 			$group->get('/dashboard', Action\DashboardAction::class, 'any');
 		});
 
